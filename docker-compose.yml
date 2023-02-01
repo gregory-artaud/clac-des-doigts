@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  db:
+    container_name: clac-des-doigts-db
+    image: postgres:14.5-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    networks:
+      - default
+
+  back:
+    container_name: clac-des-doigts-back
+    build:
+      context: .
+      dockerfile: docker/back.Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - default
+    depends_on:
+      - db
+
+networks:
+  default:
+    external: false
+    name: app-network
+
+volumes:
+  db:
+    driver: local
