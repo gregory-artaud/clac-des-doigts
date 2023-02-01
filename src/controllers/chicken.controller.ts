@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
-import { ChickenService } from './chicken.service';
+import { ChickenService } from '../services/chicken.service';
 
 @Controller('chicken')
 export class ChickenController {
