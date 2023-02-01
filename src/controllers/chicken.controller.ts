@@ -1,4 +1,13 @@
-import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { Chicken } from 'src/entities/chicken.entity';
 import { ChickenService } from '../services/chicken.service';
 
 @Controller('chicken')
@@ -6,8 +15,13 @@ export class ChickenController {
   constructor(private readonly chickenService: ChickenService) {}
 
   @Get()
-  getChickenAction(): string {
-    return this.chickenService.getHello();
+  async findAll(): Promise<Chicken[]> {
+    return await this.chickenService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string): Promise<Chicken> {
+    return await this.chickenService.findOneById(id);
   }
 
   @Post()

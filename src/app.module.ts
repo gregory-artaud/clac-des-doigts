@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ChickenController } from './controllers/chicken.controller';
+import { ChickenModule } from './chicken.module';
 import { Chicken } from './entities/chicken.entity';
-import { ChickenService } from './services/chicken.service';
 
 @Module({
   imports: [
@@ -18,8 +17,9 @@ import { ChickenService } from './services/chicken.service';
       entities: [Chicken],
       synchronize: true,
     }),
+    ChickenModule,
   ],
-  controllers: [ChickenController],
-  providers: [ChickenService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
