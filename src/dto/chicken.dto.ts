@@ -1,4 +1,4 @@
-export class FindChickenDTO {
+export class ChickenDTO {
   id: number;
   name: string;
   birthday: Date;
