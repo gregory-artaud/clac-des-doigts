@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 
-export class UserDTO {
+export class CreateChickenDTO {
   @IsNotEmpty()
   @IsString()
   name: string;
