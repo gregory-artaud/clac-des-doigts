@@ -10,8 +10,9 @@ import {
 } from '@nestjs/common';
 import { CreateChickenDTO } from 'src/dto/createChicken.dto';
 import { ChickenDTO } from 'src/dto/chicken.dto';
-import { UpdateChickenDTO } from 'src/dto/updateChicken.dto';
 import { ChickenService } from '../services/chicken.service';
+import { UpdatePatchChickenDTO } from 'src/dto/updatePatchChicken.dto';
+import { UpdatePutChickenDTO } from 'src/dto/updatePutChicken.dto';
 
 @Controller('chicken')
 export class ChickenController {
@@ -35,25 +36,28 @@ export class ChickenController {
   }
 
   @Patch(':id')
-  async update(
+  async updatePatch(
     @Param('id') id: string,
-    @Body() updateChickenDto: UpdateChickenDTO,
+    @Body() updatePatchChickenDto: UpdatePatchChickenDTO,
   ): Promise<ChickenDTO> {
-    return await this.chickenService.update(id, updateChickenDto);
+    return await this.chickenService.updatePatch(id, updatePatchChickenDto);
   }
 
-  @Put()
-  async putChickenAction(): Promise<string> {
-    return await this.chickenService.getHello();
+  @Put(':id')
+  async updatePut(
+    @Param('id') id: string,
+    @Body() updatePutChickenDto: UpdatePutChickenDTO,
+  ): Promise<ChickenDTO> {
+    return await this.chickenService.updatePut(id, updatePutChickenDto);
   }
 
-  @Delete()
-  async deleteChickenAction(): Promise<string> {
-    return await this.chickenService.getHello();
+  @Delete(':id')
+  async remove(@Param('id') id: string): Promise<void> {
+    return await this.chickenService.remove(id);
   }
 
-  @Get('run')
-  async runChickenAction(): Promise<string> {
-    return await this.chickenService.getHello();
+  @Post('run/:id')
+  async runChickenAction(@Param('id') id: string): Promise<ChickenDTO> {
+    return await this.chickenService.run(id);
   }
 }

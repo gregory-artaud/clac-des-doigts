@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateChickenDTO } from 'src/dto/createChicken.dto';
 import { ChickenDTO } from 'src/dto/chicken.dto';
 import { Chicken } from 'src/entities/chicken.entity';
 import { Repository } from 'typeorm';
-import { UpdateChickenDTO } from 'src/dto/updateChicken.dto';
+import { UpdatePatchChickenDTO } from 'src/dto/updatePatchChicken.dto';
+import { UpdatePutChickenDTO } from 'src/dto/updatePutChicken.dto';
 
 @Injectable()
 export class ChickenService {
@@ -12,10 +13,6 @@ export class ChickenService {
     @InjectRepository(Chicken)
     private chickenRepository: Repository<Chicken>,
   ) {}
-
-  getHello(): string {
-    return 'Hello World!';
-  }
 
   async findAll(): Promise<ChickenDTO[]> {
     return await this.chickenRepository.find();
@@ -42,15 +39,48 @@ export class ChickenService {
     return await this.chickenRepository.save(chicken);
   }
 
-  async update(
+  async updatePatch(
     id: string,
-    updateChickenDto: UpdateChickenDTO,
+    updatePatchChickenDto: UpdatePatchChickenDTO,
   ): Promise<ChickenDTO> {
     const chicken = await this.findOneById(id);
 
-    for (const property in updateChickenDto) {
-      chicken[property] = updateChickenDto[property];
+    if (!chicken) {
+      throw new NotFoundException();
     }
+
+    for (const property in updatePatchChickenDto) {
+      chicken[property] = updatePatchChickenDto[property];
+    }
+    return await this.chickenRepository.save(chicken);
+  }
+
+  async updatePut(
+    id: string,
+    updatePutChickenDto: UpdatePutChickenDTO,
+  ): Promise<ChickenDTO> {
+    const chicken = await this.findOneById(id);
+
+    if (!chicken) {
+      return await this.create(updatePutChickenDto);
+    }
+    for (const property in updatePutChickenDto) {
+      chicken[property] = updatePutChickenDto[property];
+    }
+    return await this.chickenRepository.save(chicken);
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.chickenRepository.delete(parseInt(id));
+  }
+
+  async run(id: string): Promise<ChickenDTO> {
+    const chicken = await this.findOneById(id);
+
+    if (!chicken) {
+      throw new NotFoundException();
+    }
+    chicken.steps++;
     return await this.chickenRepository.save(chicken);
   }
 }
