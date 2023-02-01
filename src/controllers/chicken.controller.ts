@@ -6,27 +6,32 @@ export class ChickenController {
   constructor(private readonly chickenService: ChickenService) {}
 
   @Get()
-  getChicken(): string {
+  getChickenAction(): string {
     return this.chickenService.getHello();
   }
 
   @Post()
-  postChicken(): string {
+  postChickenAction(): string {
     return this.chickenService.getHello();
   }
 
   @Put()
-  putChicken(): string {
+  putChickenAction(): string {
     return this.chickenService.getHello();
   }
 
   @Patch()
-  patchChicken(): string {
+  patchChickenAction(): string {
     return this.chickenService.getHello();
   }
 
   @Delete()
-  deleteChicken(): string {
+  deleteChickenAction(): string {
+    return this.chickenService.getHello();
+  }
+
+  @Get('run')
+  runChickenAction(): string {
     return this.chickenService.getHello();
   }
 }
